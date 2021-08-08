@@ -71,21 +71,12 @@ namespace AzureAD.Structure {
         }
       }
 
-      // Me
       var me = await Connection
         .Connection
         .Me
         .Request()
-        .GetAsync();
-
-      /*
-      using JsonDocument doc = await Connection.ReadJson("https://graph.microsoft.com/v1.0/me?$select=id");
-
-      string meId = doc
-        .RootElement
-        .GetProperty("id")
-        .GetString();
-      */
+        .GetAsync()
+        .ConfigureAwait(false);
 
       Me = m_UserDict[me.Id];
     }
@@ -122,7 +113,7 @@ namespace AzureAD.Structure {
       }
 
       Task[] tasks = Enumerable
-        .Range(1, 10)
+        .Range(1, Environment.ProcessorCount)
         .Select(_ => Task.Run(action))
         .ToArray();
 
@@ -134,7 +125,7 @@ namespace AzureAD.Structure {
         m_Progress.Report(null);
 
       await CoreLoadUsers().ConfigureAwait(false);
-      await CoreLoadManagers().ConfigureAwait(false); // !!!
+      await CoreLoadManagers().ConfigureAwait(false); 
 
       m_Progress = null;
     }

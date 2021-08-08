@@ -319,7 +319,8 @@ namespace AzureAD.Structure {
       var data = await path
         .Children
         .Request()
-        .GetAsync();
+        .GetAsync()
+        .ConfigureAwait(false);
 
       var items = data
         .Where(item => item.Folder == null)
@@ -344,7 +345,8 @@ namespace AzureAD.Structure {
       var data = await path
         .Children
         .Request()
-        .GetAsync();
+        .GetAsync()
+        .ConfigureAwait(false);
 
       var items = data
         .Where(item => item.Folder != null)
@@ -369,7 +371,8 @@ namespace AzureAD.Structure {
       return await path
         .Children
         .Request()
-        .GetAsync();
+        .GetAsync()
+        .ConfigureAwait(false);
     }
 
     /// <summary>

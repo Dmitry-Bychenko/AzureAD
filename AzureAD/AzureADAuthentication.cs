@@ -112,7 +112,7 @@ namespace AzureAD {
           result = await Application
             .AcquireTokenByUsernamePassword(m_Scopes, m_Connection.Login, pwd)
             .ExecuteAsync()
-            .ConfigureAwait(false); // ***
+            .ConfigureAwait(false); 
 
           UserAccount = result.Account;
 
