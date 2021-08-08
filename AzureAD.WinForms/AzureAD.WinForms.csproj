@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="AzureADConenctionForm.cs">
+    <Compile Update="AzureADConnectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
