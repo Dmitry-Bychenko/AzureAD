@@ -2,11 +2,30 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Azure Active Directory Helper Library</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) 2021 by Dmitry Bychenko</Copyright>
+    <PackageProjectUrl>https://github.com/Dmitry-Bychenko/AzureAD</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Dmitry-Bychenko/AzureAD</RepositoryUrl>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>AzureAD.snk.pfx</AssemblyOriginatorKeyFile>
+    <Company>Dmitry Bychenko</Company>
+    <PackageIcon>AzureAD.png</PackageIcon>
+    <PackageIconUrl />
+    <PackageReleaseNotes />
   </PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Identity.Client" Version="4.35.1" />
 		<PackageReference Include="Microsoft.Graph" Version="4.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\Images\AzureAD.png">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>
