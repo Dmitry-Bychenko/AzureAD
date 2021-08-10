@@ -54,62 +54,6 @@ namespace AzureAD {
     #region Public
 
     /// <summary>
-    /// All users 
-    /// </summary>
-    /// <param name="connection">Connection to use</param>
-    /// <param name="select">Fields to Select</param>
-    /// <returns>All Users</returns>
-    public static async Task<User[]> AllUsers(this AzureADConnection connection, string select) {
-      if (connection is null)
-        throw new ArgumentNullException(nameof(connection));
-
-      if (!connection.IsConnected)
-        return Array.Empty<User>();
-
-      if (string.IsNullOrWhiteSpace(select))
-        select = AllFields();
-      else {
-        select = string.Join(",", select
-          .Split(new char[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-          .Distinct(StringComparer.OrdinalIgnoreCase)
-        );
-      }
-
-      var data = await connection
-        .Connection
-        .Users
-        .Request()
-        .Top(999)
-        .Select(select)
-        .GetAsync()
-        .ConfigureAwait(false);
-
-      List<User> result = new();
-
-      PageIterator<User> pages = PageIterator<User>.CreatePageIterator(
-        connection.Connection,
-        data,
-        item => {
-          result.Add(item);
-
-          return true;
-        },
-        pg => pg);
-
-      await pages.IterateAsync().ConfigureAwait(false);
-
-      return result.ToArray();
-    }
-
-    /// <summary>
-    /// All users 
-    /// </summary>
-    /// <param name="connection">Connection to use</param>
-    /// <returns>All Users</returns>
-    public static async Task<User[]> AllUsers(this AzureADConnection connection) =>
-      await AllUsers(connection, null);
-
-    /// <summary>
     /// Enumerate users 
     /// </summary>
     /// <param name="connection">Connection to use</param>
@@ -133,7 +77,7 @@ namespace AzureAD {
         );
       }
 
-      int pageSize = 100;
+      int pageSize = 999;
 
       var data = await connection
           .Connection
@@ -146,10 +90,10 @@ namespace AzureAD {
           .ConfigureAwait(false);
 
       while (true) {
-        foreach (var user in data)
+        foreach (var user in data) 
           yield return user;
 
-        if (data.Count < pageSize)
+        if (data.NextPageRequest is null)
           break;
 
         data = await data
