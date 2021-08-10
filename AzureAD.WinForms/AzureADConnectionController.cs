@@ -24,8 +24,7 @@ namespace AzureAD.WinForms {
                                             string password, 
                                             string tenant, 
                                             IEnumerable<string> permissions) {
-      using AzureADConnectionForm form = new AzureADConnectionForm(
-        application, login, password, tenant, permissions);
+      using AzureADConnectionForm form = new (application, login, password, tenant, permissions);
 
       form.ShowDialog();
 

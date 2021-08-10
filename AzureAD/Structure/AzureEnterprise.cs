@@ -13,21 +13,6 @@ namespace AzureAD.Structure {
   /// 
   /// </summary>
   //
-  //-------------------------------------------------------------------------------------------------------------------
-
-  [Flags]
-  public enum AzureEnterprizeLoad {
-    Basic = 0,
-    Manager = 1,
-    All = 1
-  }
-
-  //-------------------------------------------------------------------------------------------------------------------
-  //
-  /// <summary>
-  /// 
-  /// </summary>
-  //
   // https://docs.microsoft.com/en-us/graph/api/resources/user?view=graph-rest-1.0
   //
   //-------------------------------------------------------------------------------------------------------------------
@@ -96,36 +81,12 @@ namespace AzureAD.Structure {
       Me = m_UserDict[me.Id];
     }
 
-    private async Task CoreLoadManagers() {
-      foreach (var user in m_Users) {
-        try {
-          var manager = await GraphClient
-              .Users[$"{user.User.Id}"]
-              .Manager
-              .Request()
-              .GetAsync()
-              .ConfigureAwait(false);
-
-          user.User.Manager = manager as User;
-
-          if (m_Progress is not null)
-            m_Progress.Report(user);
-        }
-        catch(ServiceException) {
-          ;
-        }
-      }
-    }
-
     private async Task CoreLoad() {
       if (m_Progress is not null)
         m_Progress.Report(null);
 
       await CoreLoadUsers().ConfigureAwait(false);
-
-      if (Loaded.HasFlag(AzureEnterprizeLoad.Manager))
-        await CoreLoadManagers().ConfigureAwait(false); 
-
+       
       m_Progress = null;
     }
 
@@ -136,11 +97,9 @@ namespace AzureAD.Structure {
     // Standard Constructor
     private AzureEnterprise(AzureADConnection connection, 
                             string selection,
-                            AzureEnterprizeLoad loaded,
                             IProgress<AzureUser> progress) {
       Connection = connection ?? throw new ArgumentNullException(nameof(connection));
       m_Progress = progress;
-      Loaded = loaded;
 
       m_Selection = string.IsNullOrWhiteSpace(selection)
         ? ""
@@ -153,9 +112,8 @@ namespace AzureAD.Structure {
     /// <param name="connection">Connection to use</param>
     public static async Task<AzureEnterprise> Create(AzureADConnection connection, 
                                                      string selection,
-                                                     AzureEnterprizeLoad loaded,
                                                      IProgress<AzureUser> progress) {
-      AzureEnterprise result = new (connection, selection, loaded, progress);
+      AzureEnterprise result = new (connection, selection, progress);
 
       await result.CoreLoad().ConfigureAwait(false);
 
@@ -166,45 +124,26 @@ namespace AzureAD.Structure {
     /// Create Instance
     /// </summary>
     /// <param name="connection">Connection to use</param>
-    public static async Task<AzureEnterprise> Create(AzureADConnection connection, string selection, AzureEnterprizeLoad loaded) =>
-      await Create(connection, selection, loaded, null).ConfigureAwait(false);
+    public static async Task<AzureEnterprise> Create(AzureADConnection connection, string selection) =>
+      await Create(connection, selection, null).ConfigureAwait(false);
 
     /// <summary>
     /// Create Instance
     /// </summary>
     /// <param name="connection">Connection to use</param>
-    public static async Task<AzureEnterprise> Create(AzureADConnection connection, AzureEnterprizeLoad loaded, IProgress<AzureUser> progress) =>
-      await Create(connection, null, loaded, progress).ConfigureAwait(false);
+    public static async Task<AzureEnterprise> Create(AzureADConnection connection, IProgress<AzureUser> progress) =>
+      await Create(connection, null, progress).ConfigureAwait(false);
 
     /// <summary>
     /// Create Instance
     /// </summary>
     /// <param name="connection">Connection to use</param>
-    public static async Task<AzureEnterprise> Create(AzureADConnection connection, AzureEnterprizeLoad loaded) =>
-      await Create(connection, null, loaded, null).ConfigureAwait(false);
-
-    /// <summary>
-    /// Create Instance
-    /// </summary>
-    /// <param name="connection">Connection to use</param>
-    public static async Task<AzureEnterprise> CreateAll(AzureADConnection connection) =>
-      await Create(connection, null, AzureEnterprizeLoad.All, null).ConfigureAwait(false);
-
-    /// <summary>
-    /// Create Instance
-    /// </summary>
-    /// <param name="connection">Connection to use</param>
-    public static async Task<AzureEnterprise> CreateBasic(AzureADConnection connection) =>
-      await Create(connection, null, AzureEnterprizeLoad.Basic, null).ConfigureAwait(false);
+    public static async Task<AzureEnterprise> Create(AzureADConnection connection) =>
+      await Create(connection, null, null).ConfigureAwait(false);
 
     #endregion Create
 
     #region Public
-
-    /// <summary>
-    /// What has been loaded
-    /// </summary>
-    public AzureEnterprizeLoad Loaded { get; }
 
     /// <summary>
     /// Connection

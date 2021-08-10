@@ -137,6 +137,7 @@ namespace AzureAD {
           .Connection
           .Users
           .Request()
+          .Expand("Manager,Extensions")
           .Top(pageSize)
           .Select(select)
           .GetAsync()
