@@ -104,7 +104,7 @@ namespace AzureAD {
           !string.IsNullOrWhiteSpace(m_Connection.Password) &&
            Guid.TryParse(m_Connection.TenantId, out var _guid)) {
         try {
-          System.Security.SecureString pwd = new ();
+          System.Security.SecureString pwd = new();
 
           foreach (char c in m_Connection.Password)
             pwd.AppendChar(c);
@@ -112,7 +112,7 @@ namespace AzureAD {
           result = await Application
             .AcquireTokenByUsernamePassword(m_Scopes, m_Connection.Login, pwd)
             .ExecuteAsync()
-            .ConfigureAwait(false); 
+            .ConfigureAwait(false);
 
           UserAccount = result.Account;
 
@@ -121,6 +121,7 @@ namespace AzureAD {
         catch (TaskCanceledException) {; }
         catch (TimeoutException) {; }
         catch (MsalClientException) {; }
+        catch (MsalUiRequiredException) {; }
       }
 
       if (m_Action is not null) {
@@ -148,6 +149,7 @@ namespace AzureAD {
         catch (TaskCanceledException) {; }
         catch (TimeoutException) {; }
         catch (MsalClientException) {; }
+        catch (MsalUiRequiredException) {; }
       }
 
       try {
@@ -169,6 +171,7 @@ namespace AzureAD {
       catch (TaskCanceledException) {; }
       catch (TimeoutException) {; }
       catch (MsalClientException) {; }
+      catch (MsalUiRequiredException) {; }
 
       return null;
     }

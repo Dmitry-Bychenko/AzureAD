@@ -224,12 +224,22 @@ namespace AzureAD {
     /// <summary>
     /// Show Explorer
     /// </summary>
-    public bool ShowExplorer() {
-      if (Connection is null)
-        return false;
-
+    public static bool ShowExplorer() {
       using (System.Diagnostics.Process.Start(new ProcessStartInfo {
         FileName = @"https://developer.microsoft.com/en-us/graph/graph-explorer",
+        UseShellExecute = true
+      })) { }
+
+      return true;
+    }
+
+    /// <summary>
+    /// Show Portal
+    /// </summary>
+    public static bool ShowAzurePortal() {
+      // https://azure.microsoft.com/en-us/features/azure-portal/
+      using (System.Diagnostics.Process.Start(new ProcessStartInfo {
+        FileName = @"https://azure.microsoft.com/en-us/features/azure-portal",
         UseShellExecute = true
       })) { }
 

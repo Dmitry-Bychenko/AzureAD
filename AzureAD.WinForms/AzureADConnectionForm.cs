@@ -118,8 +118,17 @@ namespace AzureAD.WinForms {
     }
 
     private async void btnOK_Click(object sender, EventArgs e) {
-      if (await TryConnect())
-        DialogResult = DialogResult.OK;
+      Cursor saved = Cursor;
+
+      try {
+        Cursor = Cursors.WaitCursor;
+
+        if (await TryConnect())
+          DialogResult = DialogResult.OK;
+      }
+      finally {
+        Cursor = saved;
+      }
     }
 
     private void AzureADConnectionForm_FormClosed(object sender, FormClosedEventArgs e) {
@@ -132,6 +141,12 @@ namespace AzureAD.WinForms {
         FileName = @"https://azure.microsoft.com/features/azure-portal/",
         UseShellExecute = true
       })) { }
+    }
+
+    private void btnShowHide_Click(object sender, EventArgs e) {
+      tbPassword.PasswordChar = tbPassword.PasswordChar != '\0'
+        ? '\0'
+        : '⁕';
     }
   }
 
