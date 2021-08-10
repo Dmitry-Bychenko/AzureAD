@@ -28,6 +28,7 @@ namespace AzureADExperimentsForm {
       this.btnRun = new System.Windows.Forms.Button();
       this.btnGraph = new System.Windows.Forms.Button();
       this.btnAzure = new System.Windows.Forms.Button();
+      this.lbProgress = new System.Windows.Forms.Label();
       this.SuspendLayout();
       // 
       // rtbMain
@@ -80,18 +81,31 @@ namespace AzureADExperimentsForm {
       this.btnAzure.UseVisualStyleBackColor = true;
       this.btnAzure.Click += new System.EventHandler(this.btnAzure_Click);
       // 
+      // lbProgress
+      // 
+      this.lbProgress.AutoSize = true;
+      this.lbProgress.Location = new System.Drawing.Point(437, 670);
+      this.lbProgress.Name = "lbProgress";
+      this.lbProgress.Size = new System.Drawing.Size(57, 41);
+      this.lbProgress.TabIndex = 4;
+      this.lbProgress.Text = "???";
+      this.lbProgress.Visible = false;
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(1468, 741);
+      this.Controls.Add(this.lbProgress);
       this.Controls.Add(this.btnAzure);
       this.Controls.Add(this.btnGraph);
       this.Controls.Add(this.btnRun);
       this.Controls.Add(this.rtbMain);
       this.Name = "MainForm";
       this.Text = "AzureAD Experiments";
+      this.Load += new System.EventHandler(this.MainForm_Load);
       this.ResumeLayout(false);
+      this.PerformLayout();
 
     }
 
@@ -101,6 +115,7 @@ namespace AzureADExperimentsForm {
     private System.Windows.Forms.Button btnRun;
     private System.Windows.Forms.Button btnGraph;
     private System.Windows.Forms.Button btnAzure;
+    private System.Windows.Forms.Label lbProgress;
   }
 }
 

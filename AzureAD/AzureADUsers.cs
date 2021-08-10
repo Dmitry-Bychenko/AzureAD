@@ -125,13 +125,15 @@ namespace AzureAD {
       if (string.IsNullOrWhiteSpace(select))
         select = AllFields();
       else {
+        select = select.Replace("*", AllFields());
+
         select = string.Join(",", select
           .Split(new char[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)
           .Distinct(StringComparer.OrdinalIgnoreCase)
         );
       }
 
-      int pageSize = 999;
+      int pageSize = 100;
 
       var data = await connection
           .Connection

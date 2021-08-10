@@ -27,6 +27,10 @@ namespace AzureADExperimentsForm {
 
     private AzureADConnection m_Connection;
 
+    private Task<AzureEnterprise> m_EnterpriseTask;
+
+    private AzureEnterprise m_Enterpise;
+
     #endregion Private Data
 
     #region Algorithm
@@ -42,17 +46,36 @@ namespace AzureADExperimentsForm {
         "1b4a1891-24bd-451e-8548-48986af6f553", 
         new string[] { });
 
-      return m_Connection is not null && m_Connection.IsConnected;
+      if (m_Connection is null || !m_Connection.IsConnected)
+        return false;
+
+      lbProgress.Text = "Loading...";
+      lbProgress.Visible = true;
+
+      m_EnterpriseTask = AzureEnterprise.Create(m_Connection);
+
+      return true;
     }
 
-    private void CoreRun() {
+    private async Task CoreRun() {
       if (!CoreConnect()) {
         rtbMain.Text = "Not Connected...";
 
         return;
       }
 
-      rtbMain.Text = "Connected";
+      m_Enterpise = await m_EnterpriseTask;
+
+      lbProgress.Visible = false;
+
+      rtbMain.Text = "Connected & Loaded";
+
+      var result = m_Enterpise
+        .Users
+        .Where(user => user.Manager is not null)
+        .Select(user => $"{user.User.DisplayName} :: {user.Manager.User.DisplayName}");
+
+      rtbMain.Text = string.Join(Environment.NewLine, result);
     }
 
     #endregion Algorithm
@@ -65,8 +88,8 @@ namespace AzureADExperimentsForm {
 
     #endregion Create
 
-    private void btnRun_Click(object sender, EventArgs e) {
-      CoreRun();
+    private async void btnRun_Click(object sender, EventArgs e) {
+      await CoreRun();
     }
 
     private void btnAzure_Click(object sender, EventArgs e) {
@@ -75,6 +98,10 @@ namespace AzureADExperimentsForm {
 
     private void btnGraph_Click(object sender, EventArgs e) {
       AzureADConnection.ShowExplorer();
+    }
+
+    private void MainForm_Load(object sender, EventArgs e) {
+
     }
   }
 }

@@ -38,17 +38,8 @@ namespace AzureAD.Structure {
 
         m_Users.Add(azureUser);
 
-        if (!string.IsNullOrWhiteSpace(user.Id) && !m_UserDict.ContainsKey(user.Id))
-          m_UserDict.Add(user.Id, azureUser);
-
-        if (!string.IsNullOrWhiteSpace(user.UserPrincipalName) && !m_UserDict.ContainsKey(user.UserPrincipalName))
-          m_UserDict.Add(user.UserPrincipalName, azureUser);
-
-        if (!string.IsNullOrWhiteSpace(user.Mail) && !m_UserDict.ContainsKey(user.Mail))
-          m_UserDict.Add(user.Mail, azureUser);
-
-        if (!string.IsNullOrWhiteSpace(user.DisplayName) && !m_UserDict.ContainsKey(user.DisplayName))
-          m_UserDict.Add(user.DisplayName, azureUser);
+        m_UserDict.TryAdd(user.Id, azureUser);
+        m_UserDict.TryAdd(user.UserPrincipalName, azureUser);
 
         //if (m_Progress is not null)
         //  m_Progress.Report(azureUser);
@@ -64,7 +55,7 @@ namespace AzureAD.Structure {
           int p = name.IndexOf('@');
 
           if (p >= 0) {
-            MasterDomain = name[(p + 1)..];//name.Substring(p + 1);
+            MasterDomain = name[(p + 1)..];
 
             break;
           }
@@ -100,7 +91,7 @@ namespace AzureAD.Structure {
                             IProgress<AzureUser> progress) {
       Connection = connection ?? throw new ArgumentNullException(nameof(connection));
       m_Progress = progress;
-
+       
       m_Selection = string.IsNullOrWhiteSpace(selection)
         ? ""
         : "Id,UserPrincipleName,DisplayName,Mail," + selection;
