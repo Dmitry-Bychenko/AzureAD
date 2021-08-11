@@ -259,6 +259,7 @@ namespace Nedra.Birthdays {
       this.dateTimePicker1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.dateTimePicker1.Location = new System.Drawing.Point(1312, 263);
       this.dateTimePicker1.Name = "dateTimePicker1";
+      this.dateTimePicker1.ShowCheckBox = true;
       this.dateTimePicker1.Size = new System.Drawing.Size(500, 47);
       this.dateTimePicker1.TabIndex = 5;
       // 
@@ -486,7 +487,7 @@ namespace Nedra.Birthdays {
       this.cbBirthdayFile.FormattingEnabled = true;
       this.cbBirthdayFile.Location = new System.Drawing.Point(29, 280);
       this.cbBirthdayFile.Name = "cbBirthdayFile";
-      this.cbBirthdayFile.Size = new System.Drawing.Size(747, 49);
+      this.cbBirthdayFile.Size = new System.Drawing.Size(739, 49);
       this.cbBirthdayFile.TabIndex = 4;
       // 
       // lbBirthdayDate
