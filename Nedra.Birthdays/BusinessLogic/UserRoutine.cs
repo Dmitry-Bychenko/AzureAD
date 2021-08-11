@@ -34,29 +34,25 @@ public static class UserRoutine {
     #region Public
 
     public static DateTime? GetBirthday(this AzureUser user) {
-      if (user is null)
-        return null;
+      var json = user?.ExtensionValue(EXTENSION_NAME, "employeeBirthday") ?? new JsonElement();
 
-      if (user.User.Extensions is null)
-        return null;
+      return (json.ValueKind == JsonValueKind.Null || json.ValueKind == JsonValueKind.Undefined)
+        ? null
+        : json.GetDateTime();
+    }
 
-      foreach (var ext in user.User.Extensions) {
-        if (string.Equals(ext.Id, EXTENSION_NAME, StringComparison.OrdinalIgnoreCase)) {
-          if (!ext.AdditionalData.TryGetValue("employeeBirthday", out var st))
-            return null;
+    public static string[] GetGreetings(this AzureUser user) {
+      var json = user?.ExtensionValue(EXTENSION_NAME, "employeeGreetings") ?? new JsonElement();
 
-          if (st is JsonElement json) {
-            if (json.ValueKind == JsonValueKind.Null)
-              return null;
+      if (json.ValueKind != JsonValueKind.Array)
+        return Array.Empty<string>();
 
-            return json.GetDateTime();
-          }
+      string[] result = new string[json.GetArrayLength()];
 
-          return null;
-        }
-      }
+      for (int i = 0; i < result.Length; ++i)
+        result[i] = json[i].GetString();
 
-      return null;
+      return result;
     }
 
     #endregion Public

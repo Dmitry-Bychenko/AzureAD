@@ -78,7 +78,7 @@ namespace Nedra.Birthdays {
       this.lbLogin = new System.Windows.Forms.Label();
       this.lbApplication = new System.Windows.Forms.Label();
       this.lbTenant = new System.Windows.Forms.Label();
-      this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+      this.ofdHtml = new System.Windows.Forms.OpenFileDialog();
       this.ssMain.SuspendLayout();
       this.tcMain.SuspendLayout();
       this.tpGreetings.SuspendLayout();
@@ -178,6 +178,7 @@ namespace Nedra.Birthdays {
       this.btnRemoveGreeting.Text = "-";
       this.btnRemoveGreeting.TextAlign = System.Drawing.ContentAlignment.TopCenter;
       this.btnRemoveGreeting.UseVisualStyleBackColor = true;
+      this.btnRemoveGreeting.Click += new System.EventHandler(this.btnRemoveGreeting_Click);
       // 
       // btnAddGreeting
       // 
@@ -189,6 +190,7 @@ namespace Nedra.Birthdays {
       this.btnAddGreeting.Text = "+";
       this.btnAddGreeting.TextAlign = System.Drawing.ContentAlignment.TopCenter;
       this.btnAddGreeting.UseVisualStyleBackColor = true;
+      this.btnAddGreeting.Click += new System.EventHandler(this.btnAddGreeting_Click);
       // 
       // dgvGreetings
       // 
@@ -484,7 +486,7 @@ namespace Nedra.Birthdays {
       this.cbBirthdayFile.FormattingEnabled = true;
       this.cbBirthdayFile.Location = new System.Drawing.Point(29, 280);
       this.cbBirthdayFile.Name = "cbBirthdayFile";
-      this.cbBirthdayFile.Size = new System.Drawing.Size(763, 49);
+      this.cbBirthdayFile.Size = new System.Drawing.Size(747, 49);
       this.cbBirthdayFile.TabIndex = 4;
       // 
       // lbBirthdayDate
@@ -681,6 +683,14 @@ namespace Nedra.Birthdays {
       this.lbTenant.TabIndex = 0;
       this.lbTenant.Text = "Tenant";
       // 
+      // ofdHtml
+      // 
+      this.ofdHtml.DefaultExt = "html";
+      this.ofdHtml.Filter = "Html files (*.html)|*.html|Html files (*.htm)|*.htm";
+      this.ofdHtml.FilterIndex = 0;
+      this.ofdHtml.ShowReadOnly = true;
+      this.ofdHtml.Title = "Files with Greetings";
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(17F, 41F);
@@ -745,7 +755,6 @@ namespace Nedra.Birthdays {
     private System.Windows.Forms.Button btnAddGreeting;
     private System.Windows.Forms.DataGridView dgvGreetings;
     private System.Windows.Forms.DataGridViewTextBoxColumn clmGreeting;
-    private System.ComponentModel.BackgroundWorker backgroundWorker1;
     private System.Windows.Forms.DataGridView dgvEmployees;
     private System.Windows.Forms.Label label4;
     private System.Windows.Forms.Label label3;
@@ -774,6 +783,7 @@ namespace Nedra.Birthdays {
     private System.Windows.Forms.Label lbBirthdayName;
     private System.Windows.Forms.TextBox tbChannel;
     private System.Windows.Forms.Label lbChannel;
+    private System.Windows.Forms.OpenFileDialog ofdHtml;
   }
 }
 

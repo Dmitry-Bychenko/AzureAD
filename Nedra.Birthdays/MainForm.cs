@@ -5,6 +5,7 @@ using AzureAD.WinForms;
 using Nedra.Birthdays.BusinessLogic;
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -76,23 +77,33 @@ namespace Nedra.Birthdays {
       btnConnect.Enabled = Enterprise is null;
 
       rtbBearier.Text = Enterprise?.Connection?.Bearer ?? "";
+
+      btnAddGreeting.Enabled = Enterprise is not null;
+      btnRemoveGreeting.Enabled = (Enterprise is not null) && dgvGreetings.Rows.Count > 0;
     }
 
     private async Task CoreUpdateHtmlGreeting() {
+      wbBirthday.DocumentText = "";
+
       if (Enterprise is null)
         return;
 
-      if (dgvGreetings.SelectedCells is null)
+      if (dgvGreetings.CurrentCell is null)
         return;
 
-      string fileName = (dgvGreetings.SelectedCells[0].Value as string);
+      if (dgvGreetings.Rows.Count <= 0) 
+        return;
+
+      string fileName = (dgvGreetings.CurrentCell.Value as string);
 
       if (string.IsNullOrEmpty(fileName))
         return;
 
       var data = await Enterprise.Me.ReadFile(Path.Combine(DIRECTORY_NAME, fileName));
 
-      wbBirthday.DocumentText = Encoding.UTF8.GetString(data);
+      var text = Encoding.UTF8.GetString(data);
+
+      wbGreeting.DocumentText = text;
     }
 
     #endregion UI
@@ -110,7 +121,7 @@ namespace Nedra.Birthdays {
         tbLogin.Text,
         tbPassword.Text,
         tbTenant.Text,
-        tbPermissions.Text.Split(new char[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries));
+        tbPermissions.Text.Split(new char[] { ' ', '\r', '\n', '\t', ',', ';' }, StringSplitOptions.RemoveEmptyEntries));
 
       tssState.Text = Enterprise is not null ? "Connected and Loaded" : "Not Connected";
 
@@ -119,6 +130,73 @@ namespace Nedra.Birthdays {
       await CoreLoadGreetings();
 
       CoreLoadEmployee();
+    }
+
+    private async Task<bool> CoreAddGreeting() {
+      if (Enterprise is null)
+        return false;
+      
+      if (ofdHtml.ShowDialog() != DialogResult.OK)
+        return false;
+
+      string fileName = Path.GetFileName(ofdHtml.FileName);
+
+      for (int row = 0; row < dgvGreetings.Rows.Count; ++row) 
+        if (object.Equals(dgvGreetings.Rows[row].Cells[0].Value, fileName)) 
+          return false;
+
+      byte[] data = File.ReadAllBytes(ofdHtml.FileName);
+
+      await Enterprise.Me.WriteFile(Path.Combine(DIRECTORY_NAME, fileName), data);
+
+      int rowIndex = dgvGreetings.Rows.Add();
+
+      dgvGreetings.Rows[rowIndex].Cells[0].Value = fileName;
+
+      dgvGreetings.Sort(FormRoutine.ColumnComparer);
+
+      for (int row = 0; row < dgvGreetings.Rows.Count; ++row) {
+        if (object.Equals(dgvGreetings.Rows[row].Cells[0].Value, fileName)) {
+          dgvGreetings.CurrentCell = dgvGreetings.Rows[row].Cells[0];
+
+          break;
+        }
+      }
+
+      clbGreetings.Items.Add(fileName);
+
+      CoreUpdateUI();
+
+      return true;
+    }
+
+    private async Task<bool> CoreDeleteGreeting() {
+      if (Enterprise is null)
+        return false;
+
+      if (dgvGreetings.Rows.Count <= 0)
+        return false;
+
+      if (dgvGreetings.CurrentCell is null)
+        return false;
+      
+      string fileName = dgvGreetings.Rows[dgvGreetings.CurrentCell.RowIndex].Cells[0].Value?.ToString();
+
+      if (!FormRoutine.AskQuestion($"Do you want to delete {fileName} file?"))
+        return false;
+
+      string file = Path.Combine(DIRECTORY_NAME, fileName);
+
+      await Enterprise.Me.DeleteFileOrDirectory(file);
+
+      dgvGreetings.Rows.RemoveAt(dgvGreetings.CurrentCell.RowIndex);
+
+      clbGreetings.Items.Remove(fileName);
+      CoreUpdateUI();
+
+      await CoreUpdateHtmlGreeting();
+
+      return true;
     }
 
     private async Task CoreLoadGreetings() {
@@ -144,8 +222,12 @@ namespace Nedra.Birthdays {
 
         dgvGreetings.Rows[row].Cells[0].Value = file;
       }
-    }
 
+      CoreUpdateUI();
+
+      await CoreUpdateHtmlGreeting();
+    }
+       
     private void CoreLoadEmployee() {
       if (Enterprise is null)
         return;
@@ -167,22 +249,10 @@ namespace Nedra.Birthdays {
           ? dt.Value.ToString("d MMMM yyyy")
           : "";
 
-        //user.User.Extensions
+        string[] files = user.GetGreetings() ?? Array.Empty<string>();
 
-        //var ext = await Enterprise
-        //  .GraphClient
-        //  .Users[user.User.Id]
-        //  .Extensions[EXTENSION_NAME]
-        //  .Request()
-        //  .GetAsync();
-
-        //if (ext.AdditionalData.TryGetValue("employeeBirthday", out st)) {
-
-        //}
-
-        // var ext = user.User.Extensions.Nam [EXTENSION_NAME];
-
-        // dgvEmployees.Rows[row].Cells[1].Value =
+        dgvEmployees.Rows[row].Cells[3].Value = string.Join(", ",
+          files.Distinct().OrderBy(file => file, StringComparer.OrdinalIgnoreCase));
       }
     }
 
@@ -231,6 +301,14 @@ namespace Nedra.Birthdays {
 
     private async void dgvGreetings_SelectionChanged(object sender, EventArgs e) {
       await CoreUpdateHtmlGreeting();
+    }
+
+    private async void btnAddGreeting_Click(object sender, EventArgs e) {
+      await CoreAddGreeting();
+    }
+
+    private async void btnRemoveGreeting_Click(object sender, EventArgs e) {
+      await CoreDeleteGreeting();
     }
   }
 }

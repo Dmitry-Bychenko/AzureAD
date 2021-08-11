@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace AzureAD.Structure {
@@ -380,6 +381,41 @@ namespace AzureAD.Structure {
         .Request()
         .GetAsync()
         .ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Extension By Name (null when not found)
+    /// </summary>
+    public Extension ExtensionByName(string name) {
+      if (string.IsNullOrEmpty(name))
+        return null;
+
+      if (User.Extensions is null)
+        return null;
+
+      foreach (var ext in User.Extensions)
+        if (string.Equals(ext.Id, name, StringComparison.OrdinalIgnoreCase))
+          return ext;  
+    
+      return null;
+    }
+
+    /// <summary>
+    /// Extension Value (ValueKind == JsonValueKind.Undefined when not found)
+    /// </summary>
+    public JsonElement ExtensionValue(string extensionName, string valueName) {
+      if (valueName is null)
+        return new JsonElement();
+
+      var ext = ExtensionByName(extensionName);
+
+      if (ext is null)
+        return new JsonElement();
+
+      if (ext.AdditionalData.TryGetValue(valueName, out var value) && value is JsonElement result)
+        return result;
+
+      return new JsonElement();
     }
 
     /// <summary>
