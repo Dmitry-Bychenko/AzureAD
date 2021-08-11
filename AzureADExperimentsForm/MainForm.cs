@@ -25,7 +25,7 @@ namespace AzureADExperimentsForm {
   public partial class MainForm : Form {
     #region Private Data
 
-    private AzureADConnection m_Connection;
+    //private AzureADConnection m_Connection;
 
     private Task<AzureEnterprise> m_EnterpriseTask;
 

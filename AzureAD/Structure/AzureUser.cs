@@ -316,11 +316,18 @@ namespace AzureAD.Structure {
       if (!string.IsNullOrEmpty(directory))
         path = path.ItemWithPath(directory);
 
-      var data = await path
-        .Children
-        .Request()
-        .GetAsync()
-        .ConfigureAwait(false);
+      IDriveItemChildrenCollectionPage data = null;
+
+      try {
+        data = await path
+          .Children
+          .Request()
+          .GetAsync()
+          .ConfigureAwait(false);
+      }
+      catch (ServiceException) {
+        yield break;
+      }
 
       var items = data
         .Where(item => item.Folder == null)

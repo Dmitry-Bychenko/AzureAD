@@ -4,10 +4,10 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <AssemblyName>AzureAD.WinForms</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AzureAD.WinForms\AzureAD.WinForms.csproj" />
     <ProjectReference Include="..\AzureAD\AzureAD.csproj" />
   </ItemGroup>
 
