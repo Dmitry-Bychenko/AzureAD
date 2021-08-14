@@ -35,10 +35,7 @@ namespace AzureAD {
           SecurityProtocolType.Tls12;
       }
       catch (NotSupportedException) {
-        ServicePointManager.SecurityProtocol =
-          SecurityProtocolType.Tls |
-          SecurityProtocolType.Tls11 |
-          SecurityProtocolType.Tls12;
+        ;
       }
 
       s_CookieContainer = new CookieContainer();

@@ -164,6 +164,9 @@ namespace AzureAD.Structure {
       return m_Image;
     }
 
+    /// <summary>
+    /// Set Image Data
+    /// </summary>
     public async Task<bool> SetImageData(byte[] data, bool force = false) {
       if (data is null)
         data = Array.Empty<byte>();
@@ -382,6 +385,60 @@ namespace AzureAD.Structure {
         .GetAsync()
         .ConfigureAwait(false);
     }
+
+    /// <summary>
+    /// Send Chat Message 
+    /// </summary>
+    public async Task<bool> SendChatMessage(string teamId, string message, BodyType bodyType) {
+      if (string.IsNullOrWhiteSpace(message))
+        return false;
+
+      var chatMessage = new ChatMessage {
+        CreatedDateTime = DateTime.Now,
+        From = new ChatMessageFromIdentitySet {
+          User = new Identity {
+            //Id = "id-value",
+            DisplayName = User.DisplayName,
+          }
+        },
+        Body = new ItemBody {
+          ContentType = bodyType,
+          Content = message
+        }
+      };
+
+      if (string.IsNullOrWhiteSpace(teamId))
+        return false;
+
+      var team = GraphClient
+        .Teams[teamId];
+
+      if (team is null)
+        return false;
+
+      var channel = await team
+        .PrimaryChannel
+        .Request()
+        .GetAsync();
+
+      if (channel is null)
+        return false;
+
+      await GraphClient
+        .Teams[teamId]
+        .Channels[channel.Id]
+        .Messages
+        .Request()
+        .AddAsync(chatMessage);
+
+      return true;
+    }
+
+    /// <summary>
+    /// Send Chat Message 
+    /// </summary>
+    public async Task<bool> SendChatMessage(string teamId, string message) =>
+      await SendChatMessage(teamId, message, BodyType.Html);
 
     /// <summary>
     /// Extension By Name (null when not found)

@@ -58,14 +58,15 @@ namespace Nedra.Birthdays {
       this.lbUpTo = new System.Windows.Forms.Label();
       this.dtpTo = new System.Windows.Forms.DateTimePicker();
       this.dtpFrom = new System.Windows.Forms.DateTimePicker();
+      this.btnSend = new System.Windows.Forms.Button();
       this.cbBirthdayFile = new System.Windows.Forms.ComboBox();
       this.lbBirthdayDate = new System.Windows.Forms.Label();
       this.lbBirthdayDepartment = new System.Windows.Forms.Label();
       this.lbBirthdayJobTitle = new System.Windows.Forms.Label();
       this.lbBirthdayName = new System.Windows.Forms.Label();
       this.tpName = new System.Windows.Forms.TabPage();
-      this.tbChannel = new System.Windows.Forms.TextBox();
-      this.lbChannel = new System.Windows.Forms.Label();
+      this.tbTeam = new System.Windows.Forms.TextBox();
+      this.lbTeam = new System.Windows.Forms.Label();
       this.rtbBearier = new System.Windows.Forms.RichTextBox();
       this.lbBearier = new System.Windows.Forms.Label();
       this.lbPermissions = new System.Windows.Forms.Label();
@@ -382,6 +383,7 @@ namespace Nedra.Birthdays {
       // 
       // spltMain.Panel2
       // 
+      this.spltMain.Panel2.Controls.Add(this.btnSend);
       this.spltMain.Panel2.Controls.Add(this.cbBirthdayFile);
       this.spltMain.Panel2.Controls.Add(this.lbBirthdayDate);
       this.spltMain.Panel2.Controls.Add(this.lbBirthdayDepartment);
@@ -480,6 +482,17 @@ namespace Nedra.Birthdays {
       this.dtpFrom.Size = new System.Drawing.Size(392, 47);
       this.dtpFrom.TabIndex = 0;
       // 
+      // btnSend
+      // 
+      this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+      this.btnSend.Location = new System.Drawing.Point(513, 769);
+      this.btnSend.Name = "btnSend";
+      this.btnSend.Size = new System.Drawing.Size(272, 58);
+      this.btnSend.TabIndex = 5;
+      this.btnSend.Text = "Congratulate";
+      this.btnSend.UseVisualStyleBackColor = true;
+      this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+      // 
       // cbBirthdayFile
       // 
       this.cbBirthdayFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -487,7 +500,7 @@ namespace Nedra.Birthdays {
       this.cbBirthdayFile.FormattingEnabled = true;
       this.cbBirthdayFile.Location = new System.Drawing.Point(29, 280);
       this.cbBirthdayFile.Name = "cbBirthdayFile";
-      this.cbBirthdayFile.Size = new System.Drawing.Size(739, 49);
+      this.cbBirthdayFile.Size = new System.Drawing.Size(756, 49);
       this.cbBirthdayFile.TabIndex = 4;
       // 
       // lbBirthdayDate
@@ -529,8 +542,8 @@ namespace Nedra.Birthdays {
       // tpName
       // 
       this.tpName.BackColor = System.Drawing.SystemColors.Control;
-      this.tpName.Controls.Add(this.tbChannel);
-      this.tpName.Controls.Add(this.lbChannel);
+      this.tpName.Controls.Add(this.tbTeam);
+      this.tpName.Controls.Add(this.lbTeam);
       this.tpName.Controls.Add(this.rtbBearier);
       this.tpName.Controls.Add(this.lbBearier);
       this.tpName.Controls.Add(this.lbPermissions);
@@ -549,22 +562,23 @@ namespace Nedra.Birthdays {
       this.tpName.TabIndex = 3;
       this.tpName.Text = "Settings";
       // 
-      // tbChannel
+      // tbTeam
       // 
-      this.tbChannel.Location = new System.Drawing.Point(22, 650);
-      this.tbChannel.Name = "tbChannel";
-      this.tbChannel.Size = new System.Drawing.Size(639, 47);
-      this.tbChannel.TabIndex = 13;
+      this.tbTeam.Location = new System.Drawing.Point(22, 650);
+      this.tbTeam.Name = "tbTeam";
+      this.tbTeam.Size = new System.Drawing.Size(639, 47);
+      this.tbTeam.TabIndex = 13;
+      this.tbTeam.Text = "7bfa1540-d2c6-467b-a882-c3006a05434a";
       // 
-      // lbChannel
+      // lbTeam
       // 
-      this.lbChannel.AutoSize = true;
-      this.lbChannel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-      this.lbChannel.Location = new System.Drawing.Point(22, 589);
-      this.lbChannel.Name = "lbChannel";
-      this.lbChannel.Size = new System.Drawing.Size(132, 41);
-      this.lbChannel.TabIndex = 12;
-      this.lbChannel.Text = "Channel";
+      this.lbTeam.AutoSize = true;
+      this.lbTeam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+      this.lbTeam.Location = new System.Drawing.Point(22, 589);
+      this.lbTeam.Name = "lbTeam";
+      this.lbTeam.Size = new System.Drawing.Size(92, 41);
+      this.lbTeam.TabIndex = 12;
+      this.lbTeam.Text = "Team";
       // 
       // rtbBearier
       // 
@@ -782,9 +796,10 @@ namespace Nedra.Birthdays {
     private System.Windows.Forms.Label lbBirthdayDepartment;
     private System.Windows.Forms.Label lbBirthdayJobTitle;
     private System.Windows.Forms.Label lbBirthdayName;
-    private System.Windows.Forms.TextBox tbChannel;
-    private System.Windows.Forms.Label lbChannel;
+    private System.Windows.Forms.TextBox tbTeam;
+    private System.Windows.Forms.Label lbTeam;
     private System.Windows.Forms.OpenFileDialog ofdHtml;
+    private System.Windows.Forms.Button btnSend;
   }
 }
 

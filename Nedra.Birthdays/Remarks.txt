@@ -1,0 +1,25 @@
+﻿Team: 7bfa1540-d2c6-467b-a882-c3006a05434a - Тестовые сообщения
+      9eb5b779-3ca8-4411-ac0d-f61a1469377f - Поздравления
+
+Каналы для передачи сообщений:
+
+https://graph.microsoft.com/v1.0/teams/7bfa1540-d2c6-467b-a882-c3006a05434a/channels
+
+Channel 19:1WaWV8KS__8w3-uyKI2Y4RRbvklAOjhVqaj_F7R1LrY1@thread.tacv2 - Тестовые сообщения
+        19:981fa8f1ee7b43a18e2687c91697eb9b@thread.tacv2 - Поздравления
+               
+
+Передать сообщение:
+
+POST teams/{TeamId}/channels/{ChannelId}/messages
+
+{
+  "body": {
+    "content": "Just a Test"
+  }
+}
+
+Смотри https://docs.microsoft.com/en-us/graph/api/channel-post-messages?view=graph-rest-1.0&tabs=http
+
+ChannelMessage.Send
+Channel.ReadBasic.All

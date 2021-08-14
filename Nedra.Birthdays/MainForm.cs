@@ -55,7 +55,7 @@ namespace Nedra.Birthdays {
       wbGreeting.Parent = tpGreetings;
 
       wbBirthday.Location = new Point(cbBirthdayFile.Left, cbBirthdayFile.Top + cbBirthdayFile.Height + 20);
-      wbBirthday.Size = new Size(cbBirthdayFile.Width, spltMain.Panel2.Height - 20 - wbBirthday.Top);
+      wbBirthday.Size = new Size(cbBirthdayFile.Width, btnSend.Top - 20 - wbBirthday.Top);
       wbBirthday.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
       wbBirthday.Parent = spltMain.Panel2;
 
@@ -309,6 +309,11 @@ namespace Nedra.Birthdays {
 
     private async void btnRemoveGreeting_Click(object sender, EventArgs e) {
       await CoreDeleteGreeting();
+    }
+
+    private async void btnSend_Click(object sender, EventArgs e) {
+      //TODO : Message Required
+      await Enterprise.Me.SendMessage(tbTeam.Text, "Test Message Sending");
     }
   }
 }
