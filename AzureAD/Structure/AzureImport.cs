@@ -34,9 +34,9 @@ namespace AzureAD.Structure {
   public sealed class AzureImport {
     #region Private Data
 
-    private List<AzureImportUser> m_Items = new List<AzureImportUser>();
+    private readonly List<AzureImportUser> m_Items = new ();
 
-    private Dictionary<string, AzureImportUser> m_Dictionary = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, AzureImportUser> m_Dictionary = new(StringComparer.OrdinalIgnoreCase);
 
     #endregion Private Data
 
@@ -101,7 +101,7 @@ namespace AzureAD.Structure {
     /// Add
     /// </summary>
     public AzureImportUser Add() {
-      AzureImportUser result = new AzureImportUser(this, new User());
+      AzureImportUser result = new (this, new User());
 
       result.ImportKind = AzureImportKind.Insert;
       result.User.Id = Guid.NewGuid().ToString();

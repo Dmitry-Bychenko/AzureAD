@@ -28,7 +28,7 @@ namespace AzureAD.Structure {
       if (source is null)
         return null;
 
-      User result = new User();
+      User result = new ();
 
       result.Id = source.Id;
       result.UserPrincipalName = source.UserPrincipalName;
@@ -50,12 +50,12 @@ namespace AzureAD.Structure {
       }
 
       foreach (Extension sourceExtension in source.Extensions) {
-        OpenTypeExtension resultExtension = new OpenTypeExtension() {
+        OpenTypeExtension resultExtension = new () {
           Id = sourceExtension.Id,
           ExtensionName = sourceExtension.Id,
         };
 
-        Dictionary<string, object> dict = new Dictionary<string, object>();
+        Dictionary<string, object> dict = new ();
 
         foreach (var pair in sourceExtension.AdditionalData)
           dict.Add(pair.Key, pair.Value);
@@ -157,7 +157,7 @@ namespace AzureAD.Structure {
 
       // Add or Update
       foreach (var sourceExtension in User.Extensions) {
-        OpenTypeExtension extension = new OpenTypeExtension() {
+        OpenTypeExtension extension = new () {
           Id = sourceExtension.Id,
           ExtensionName = sourceExtension.Id,
         };
