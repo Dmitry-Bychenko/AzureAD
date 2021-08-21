@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureAD.WinForms", "AzureAD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureADExperimentsForm", "AzureADExperimentsForm\AzureADExperimentsForm.csproj", "{1BDC23A9-0FB5-4601-89ED-028980AC0498}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nedra.Birthdays", "Nedra.Birthdays\Nedra.Birthdays.csproj", "{0C7E6501-22EE-4142-9CC8-396AE70BE5BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nedra.Birthdays", "Nedra.Birthdays\Nedra.Birthdays.csproj", "{0C7E6501-22EE-4142-9CC8-396AE70BE5BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nedra.Import.Data", "Nedra.Import.Data\Nedra.Import.Data.csproj", "{B47C3D40-5032-486E-B5C6-CCECB3A18453}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0C7E6501-22EE-4142-9CC8-396AE70BE5BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C7E6501-22EE-4142-9CC8-396AE70BE5BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C7E6501-22EE-4142-9CC8-396AE70BE5BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B47C3D40-5032-486E-B5C6-CCECB3A18453}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B47C3D40-5032-486E-B5C6-CCECB3A18453}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B47C3D40-5032-486E-B5C6-CCECB3A18453}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B47C3D40-5032-486E-B5C6-CCECB3A18453}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
