@@ -119,7 +119,7 @@ namespace Nedra.Import.Data {
           else {
             item.Id = Guid.NewGuid().ToString();
 
-            string upn = $"{item.Mail}@{Enterprise.MasterDomain}";
+            string upn = $"{item.Mail.Substring(0, item.Mail.IndexOf('@'))}@{Enterprise.MasterDomain}";
 
             if (upns.Add(upn))
               item.UserPrincipalName = upn;

@@ -212,7 +212,7 @@ namespace AzureAD.Structure {
       if (string.IsNullOrWhiteSpace(User.UserPrincipalName)) {
         string mail = string.IsNullOrWhiteSpace(user.Mail)
           ? $"{user.Id}@{Enterprise.MasterDomain}"
-          : $"{user.Mail}@{Enterprise.MasterDomain}";
+          : $"{user.Mail.Substring(0, user.Mail.IndexOf('@'))}@{Enterprise.MasterDomain}";
 
         if (Enterprise.FindUser(mail) is null && Import.Find(mail) is null)
           user.UserPrincipalName = mail;
