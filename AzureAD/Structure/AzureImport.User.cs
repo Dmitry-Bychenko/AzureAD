@@ -82,9 +82,9 @@ namespace AzureAD.Structure {
         .Where(p => p.GetGetMethod().IsPublic)
         .Select(p => (key : p.Name, value : p.GetValue(source)));
 
-      foreach (var pair in properties)
-        if (pair.value is not null)
-          result.Add(pair.key, pair.value);
+      foreach (var (k, v) in properties)
+        if (v is not null)
+          result.Add(k, v);
 
       return result;
     }
@@ -249,22 +249,45 @@ namespace AzureAD.Structure {
     }
 
     internal async Task CorePerformAction() {
-      if (ImportKind == AzureImportKind.None)
-        return;
-      if (!Checked)
-        return;
+      if (ImportKind == AzureImportKind.None || !Checked) {
+        LogRecord.ImportResult = AzureImportResult.Skipped;
+        LogRecord.Error = null;
 
-      if (ImportKind == AzureImportKind.Delete || ImportKind == AzureImportKind.Garbage)
-        await CorePerformDelete();
-      else if (ImportKind == AzureImportKind.Insert) {
-        await CorePerformInsert();
-
-        await CorePerformExtensions();
+        return;
       }
-      else if (ImportKind == AzureImportKind.Update) {
-        await CorePerformUpdate();
+        
+      try {
+        if (ImportKind == AzureImportKind.Delete || ImportKind == AzureImportKind.Garbage)
+          await CorePerformDelete();
+        else if (ImportKind == AzureImportKind.Insert) {
+          await CorePerformInsert();
 
-        await CorePerformExtensions();
+          await CorePerformExtensions();
+        }
+        else if (ImportKind == AzureImportKind.Update) {
+          await CorePerformUpdate();
+
+          await CorePerformExtensions();
+        }
+
+        LogRecord.ImportResult = AzureImportResult.Success;
+        LogRecord.Error = null;
+      }
+      catch (ServiceException e) {
+        LogRecord.ImportResult = AzureImportResult.Failed;
+        LogRecord.Error = e;
+      }
+    }
+
+    internal async Task CoreManager() {
+      if (LogRecord.ImportResult != AzureImportResult.Success)
+        return;
+
+      string result = await CoreManagerUpdate();
+
+      if (!string.IsNullOrEmpty(result)) {
+        LogRecord.ImportResult = AzureImportResult.Failed;
+        LogRecord.Error = new InvalidOperationException(result);
       }
     }
 
@@ -276,6 +299,8 @@ namespace AzureAD.Structure {
       Import = import ?? throw new ArgumentNullException(nameof(import));
 
       User = CloneUser(user);
+
+      LogRecord = new AzureImportLogRecord(this);
     }
 
     #endregion Create
@@ -318,6 +343,11 @@ namespace AzureAD.Structure {
     public User SourceUser => User is null
       ? null
       : Enterprise.FindUser(User.Id)?.User;
+
+    /// <summary>
+    /// Log Record
+    /// </summary>
+    public AzureImportLogRecord LogRecord { get; }
 
     #endregion Public
   }
