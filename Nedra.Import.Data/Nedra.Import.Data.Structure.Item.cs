@@ -126,6 +126,11 @@ namespace Nedra.Import.Data {
     public string JobTitle { get; }
 
     /// <summary>
+    /// Department
+    /// </summary>
+    public string Department => Hierarchy.LastOrDefault() ?? "";
+
+    /// <summary>
     /// Name
     /// </summary>
     public string Name { get; }
