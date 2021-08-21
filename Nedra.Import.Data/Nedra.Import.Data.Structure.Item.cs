@@ -165,6 +165,12 @@ namespace Nedra.Import.Data {
     /// </summary>
     public string ManagerMail { get; }
 
+    /// <summary>
+    /// To String
+    /// </summary>
+    public override string ToString() =>
+      $"{Name}, {JobTitle} ({Mail})";
+
     #endregion Public
 
     #region IEquatable<StructureImportUser>
