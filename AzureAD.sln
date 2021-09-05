@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureADExperimentsForm", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nedra.Birthdays", "Nedra.Birthdays\Nedra.Birthdays.csproj", "{0C7E6501-22EE-4142-9CC8-396AE70BE5BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nedra.Import.Data", "Nedra.Import.Data\Nedra.Import.Data.csproj", "{B47C3D40-5032-486E-B5C6-CCECB3A18453}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nedra.Import.Data", "Nedra.Import.Data\Nedra.Import.Data.csproj", "{B47C3D40-5032-486E-B5C6-CCECB3A18453}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nedra.Azure.Experiments", "Nedra.Azure.Experiments\Nedra.Azure.Experiments.csproj", "{4C4A0EDE-23D8-4A9A-93F3-5B6EFD02A8AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{B47C3D40-5032-486E-B5C6-CCECB3A18453}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B47C3D40-5032-486E-B5C6-CCECB3A18453}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B47C3D40-5032-486E-B5C6-CCECB3A18453}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C4A0EDE-23D8-4A9A-93F3-5B6EFD02A8AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C4A0EDE-23D8-4A9A-93F3-5B6EFD02A8AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C4A0EDE-23D8-4A9A-93F3-5B6EFD02A8AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C4A0EDE-23D8-4A9A-93F3-5B6EFD02A8AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -92,6 +93,49 @@ namespace AzureAD {
         throw new ArgumentNullException(nameof(permissions));
 
       Permissions = permissions
+        .Where(item => !string.IsNullOrWhiteSpace(item))
+        .Select(item => item.Trim())
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .OrderBy(item => item, StringComparer.OrdinalIgnoreCase)
+        .ToList();
+
+      Authentication = new AzureADAuthentication(this, m_CallBack);
+    }
+
+    /// <summary>
+    /// Standard Constructor
+    /// </summary>
+    /// <param name="connectionString">Connection String</param>
+    public AzureADConnection(string connectionString) {
+      if (connectionString is null)
+        throw new ArgumentNullException(nameof(connectionString));
+
+      DbConnectionStringBuilder builder = new() {
+        ConnectionString = connectionString
+      };
+
+      ApplicationId = builder.TryGetValue("Application", out var applicationId)
+        ? applicationId?.ToString()
+        : throw new ArgumentException("Application must be set", nameof(connectionString));
+
+      TenantId = builder.TryGetValue("Tenant", out var tenantId)
+        ? tenantId?.ToString() ?? "common"
+        : "common";
+
+      Login = builder.TryGetValue("Logon", out var login)
+        ? login?.ToString() ?? Environment.UserName
+        : Environment.UserName;
+
+      Password = builder.TryGetValue("Password", out var password)
+        ? password?.ToString() ?? ""
+        : "";
+
+      string perms = builder.TryGetValue("Permissions", out var perm)
+        ? perm?.ToString() ?? "User.ReadBasic.All"
+        : "User.ReadBasic.All";
+
+      Permissions = perms
+        .Split(new char[] { ',', ';', ' ', '\t'}, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
         .Where(item => !string.IsNullOrWhiteSpace(item))
         .Select(item => item.Trim())
         .Distinct(StringComparer.OrdinalIgnoreCase)
